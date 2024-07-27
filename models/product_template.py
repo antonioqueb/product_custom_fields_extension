@@ -8,8 +8,14 @@ class ProductTemplate(models.Model):
     gramaje = fields.Float(string='Gramaje')
     tipo = fields.Char(string='Tipo')
     kilos = fields.Float(string='Kilos')
-    proveedor = fields.Many2one('res.partner', string='Proveedor')
-    planta_ingreso = fields.Char(string='Planta de Ingreso')
+    planta = fields.Selection([
+        ('planta_1', 'Planta 1'),
+        ('planta_2', 'Planta 2'),
+        ('planta_3', 'Planta 3'),
+        ('planta_4', 'Planta 4'),
+        ('planta_5', 'Planta 5'),
+        ('planta_6', 'Planta 6'),
+    ], string='Planta', default='planta_1')
     folio = fields.Char(string='Folio')
 
     _sql_constraints = [
