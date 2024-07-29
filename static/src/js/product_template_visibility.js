@@ -23,6 +23,10 @@ class ProductTemplateVisibility extends Component {
             this.state.isPaperRoll = changes.is_paper_roll;
         }
     }
+
+    get isPaperRollVisible() {
+        return this.state.isPaperRoll;
+    }
 }
 
 ProductTemplateVisibility.template = 'product.ProductTemplateVisibility';
