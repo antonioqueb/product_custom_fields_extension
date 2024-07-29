@@ -1,17 +1,25 @@
 /** @odoo-module **/
 
 import { registry } from '@web/core/registry';
-import { Component, useState, onWillUpdateProps, onMounted } from '@odoo/owl';
+import { Component, useState, onWillUpdateProps, onWillStart } from '@odoo/owl';
 
 class ProductTemplateVisibility extends Component {
     setup() {
         this.state = useState({
-            isPaperRoll: this.props.record.data.is_paper_roll,
+            isPaperRoll: false,
         });
 
-        onMounted(() => {
-            this.env.bus.on('FIELD_CHANGE', this, this.onFieldChange);
+        onWillStart(async () => {
+            this.state.isPaperRoll = this.props.record.data.is_paper_roll;
         });
+
+        onWillUpdateProps((nextProps) => {
+            if (nextProps.record.data.is_paper_roll !== this.props.record.data.is_paper_roll) {
+                this.state.isPaperRoll = nextProps.record.data.is_paper_roll;
+            }
+        });
+
+        this.env.bus.on('FIELD_CHANGE', this, this.onFieldChange);
     }
 
     willUnmount() {
@@ -22,6 +30,10 @@ class ProductTemplateVisibility extends Component {
         if (dataPointId === this.props.record.id && 'is_paper_roll' in changes) {
             this.state.isPaperRoll = changes.is_paper_roll;
         }
+    }
+
+    get isVisible() {
+        return this.state.isPaperRoll;
     }
 }
 
