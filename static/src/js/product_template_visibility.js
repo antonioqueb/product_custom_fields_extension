@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from '@web/core/registry';
-import { Component, onMounted, useState } from '@odoo/owl';
+import { Component, useState, onWillUpdateProps } from '@odoo/owl';
 
 class ProductTemplateVisibility extends Component {
     setup() {
@@ -9,26 +9,22 @@ class ProductTemplateVisibility extends Component {
             isPaperRoll: this.props.record.data.is_paper_roll,
         });
 
-        onMounted(() => {
-            this.env.bus.on('FIELD_CHANGE', this, this.onFieldChange);
+        onWillUpdateProps((nextProps) => {
+            if (nextProps.record.data.is_paper_roll !== this.props.record.data.is_paper_roll) {
+                this.state.isPaperRoll = nextProps.record.data.is_paper_roll;
+            }
         });
     }
 
-    willUnmount() {
-        this.env.bus.off('FIELD_CHANGE', this, this.onFieldChange);
-    }
-
-    onFieldChange({ dataPointId, changes }) {
-        if (dataPointId === this.props.record.id && 'is_paper_roll' in changes) {
-            this.state.isPaperRoll = changes.is_paper_roll;
-        }
-    }
-
-    get isPaperRollVisible() {
+    get isVisible() {
         return this.state.isPaperRoll;
     }
 }
 
-ProductTemplateVisibility.template = 'product.ProductTemplateVisibility';
+ProductTemplateVisibility.template = `
+    <div t-if="state.isPaperRoll">
+        <t t-slot="default"/>
+    </div>
+`;
 
 registry.category('fields').add('product_template_visibility', ProductTemplateVisibility);
