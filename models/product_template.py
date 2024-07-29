@@ -7,14 +7,6 @@ class ProductTemplate(models.Model):
     gramaje = fields.Float(string='Gramaje')
     tipo = fields.Char(string='Tipo')
     kilos = fields.Float(string='Kilos')
-    planta = fields.Selection([
-        ('planta_1', 'Planta 1'),
-        ('planta_2', 'Planta 2'),
-        ('planta_3', 'Planta 3'),
-        ('planta_4', 'Planta 4'),
-        ('planta_5', 'Planta 5'),
-        ('planta_6', 'Planta 6'),
-    ], string='Planta', default='planta_1')
     folio = fields.Char(string='Folio')
     is_paper_roll = fields.Boolean(string="Es rollo de papel", default=False)
 
