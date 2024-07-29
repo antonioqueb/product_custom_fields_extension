@@ -1,4 +1,3 @@
-# models/product_template.py
 from odoo import models, fields
 
 class ProductTemplate(models.Model):
@@ -17,6 +16,7 @@ class ProductTemplate(models.Model):
         ('planta_6', 'Planta 6'),
     ], string='Planta', default='planta_1')
     folio = fields.Char(string='Folio')
+    is_paper_roll = fields.Boolean(string="Es rollo de papel", default=False)
 
     _sql_constraints = [
         ('unique_folio', 'unique(folio)', 'El folio debe ser único.'),
